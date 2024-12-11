@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const auth = require('./routes/auth');
 const audiobooks = require('./routes/audiobooks');
 const isAuth = require('./middleware/isAuth');
+const path = require('path');
 
 // intilization
 const app = express();
@@ -40,6 +41,8 @@ const fileFilter = (req, file, cb) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/auth', auth);
 app.use(

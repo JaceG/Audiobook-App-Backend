@@ -46,6 +46,7 @@ const userSchema = new Schema({
 	],
 	tags: [String],
 	file: String,
+	coverImage: String,
 	userId: Schema.Types.ObjectId,
 });
 

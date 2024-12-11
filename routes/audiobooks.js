@@ -150,8 +150,6 @@ router.post(
 			const { url } = req.body;
 			const metaData = await fetchMetadata(url);
 
-			console.log(metaData);
-
 			await Audiobook.create({
 				title: metaData.title,
 				subtitle: metaData.subtitle,
@@ -169,6 +167,7 @@ router.post(
 				categories: metaData.categories,
 				tags: metaData.tags,
 				file: req.file.path,
+				coverImage: metaData.image,
 				userId: req.userId,
 			});
 			res.json({
