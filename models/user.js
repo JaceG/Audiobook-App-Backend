@@ -11,6 +11,10 @@ const userSchema = new Schema({
 	password: String,
 	status: Number,
 	role: String,
+	friends: {
+		type: [ObjectId],
+		ref: 'user',
+	},
 });
 
 const User = mongoose.model('user', userSchema);

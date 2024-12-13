@@ -2,6 +2,7 @@
 const express = require('express');
 const audiobookMetadata = require('music-metadata');
 const Audiobook = require('../models/audiobooks');
+const User = require('../models/user');
 const { body, validationResult } = require('express-validator');
 const { getAudiobookInfo } = require('../controllers/audiobook');
 const { fetchMetadata } = require('../helpers/functions');
@@ -121,6 +122,37 @@ router.get('/list', async function (req, res, next) {
 		message: 'Audiobook added successfully!',
 		data: audiobooks,
 		count,
+	});
+});
+
+router.post('/search-user', async function (req, res, next) {
+	const name = req.body.name;
+	const perPage = 2;
+	const users = await User.find({
+		name: { $regex: name, $options: 'i' },
+		role: 'admin',
+	});
+	res.json({
+		message: 'Users searched successfully!',
+		data: users,
+	});
+});
+
+router.post('/add-friend', async function (req, res, next) {
+	const id = req.body.id;
+	const user = await User.findById(req.userId);
+	user.friends.push(id);
+	await user.save();
+	res.json({
+		message: 'Friend added!',
+	});
+});
+
+router.get('/get-friends', async function (req, res, next) {
+	const user = await User.findById(req.userId).populate('friends');
+	res.json({
+		message: 'Friends found!',
+		data: user.friends,
 	});
 });
 
